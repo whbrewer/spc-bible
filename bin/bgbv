@@ -1,0 +1,26 @@
+#!/bin/ksh
+# get a bunch of verses from a file
+# usage: getbv filename
+# where filename looks like:
+# joh 3:16
+# joh 5:24
+# psa 119:11
+
+case $# in
+   1) file=$1 ;;
+   *) echo 'Usage: getbv filename'
+      exit ;;
+esac
+
+numverses=`wc -l $file | awk '{print $1}'`
+
+count=0
+
+while [[ $count -lt $numverses ]]
+do
+  count=`expr $count + 1`
+  verse=`awk '{s+=1;if (s=='$count') print $0}' $file`
+# ~/bin/bgv $verse
+  bghv $verse
+  echo ""
+done

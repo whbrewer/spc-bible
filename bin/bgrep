@@ -1,0 +1,33 @@
+#!/bin/sh
+# Bible grep tool
+bdir=~/gdrive/Bible/BAV
+
+case $# in
+   1) files='gen.txt exo.txt lev.txt num.txt deu.txt jos.txt jdg.txt rut.txt 1sa.txt 2sa.txt 1ki.txt 2ki.txt 1ch.txt 2ch.txt ezr.txt neh.txt est.txt job.txt psa.txt pro.txt ecc.txt sos.txt isa.txt jer.txt lam.txt eze.txt dan.txt hos.txt joe.txt amo.txt oba.txt jon.txt mic.txt nah.txt hab.txt zep.txt hag.txt zec.txt mal.txt mat.txt mar.txt luk.txt joh.txt act.txt rom.txt 1co.txt 2co.txt gal.txt eph.txt php.txt col.txt 1th.txt 2th.txt 1ti.txt 2ti.txt tit.txt phm.txt heb.txt jam.txt 1pe.txt 2pe.txt 1jo.txt 2jo.txt 3jo.txt jde.txt rev.txt'
+      ;;
+   2) if [ $2 = "nt" ]; 
+	then files='mat.txt mar.txt luk.txt joh.txt act.txt rom.txt 1co.txt 2co.txt gal.txt eph.txt php.txt col.txt 1th.txt 2th.txt 1ti.txt 2ti.txt tit.txt phm.txt heb.txt jam.txt 1pe.txt 2pe.txt 1jo.txt 2jo.txt 3jo.txt jde.txt rev.txt'
+      elif [ $2 = "ot" ];
+	then files='gen.txt exo.txt lev.txt num.txt deu.txt jos.txt jdg.txt rut.txt 1sa.txt 2sa.txt 1ki.txt 2ki.txt 1ch.txt 2ch.txt ezr.txt neh.txt est.txt job.txt psa.txt pro.txt ecc.txt sos.txt isa.txt jer.txt lam.txt eze.txt dan.txt hos.txt joe.txt amo.txt oba.txt jon.txt mic.txt nah.txt hab.txt zep.txt hag.txt zec.txt mal.txt'
+      elif [ $2 = "go" ];
+	then files='mat.txt mar.txt luk.txt joh.txt'
+      else
+        files=$2.txt
+      fi
+      ;;
+esac
+
+for f in $files
+do
+#   echo $f
+   book=`echo $f | sed 's/\.txt//g'`
+   awk '/   [0-9]*:[0-9]*/{verse=$1};/'$1'/{print "'$book'",verse,$0}' $bdir/$f\
+   | sed 's/        //g'
+done
+
+
+
+
+
+#awk '/^                       .*[a-zA-Z]/ {printf "\n\n\n%s %s %s\n\n\n",$1,$2,$3} /'$1'/,/:/ {print $0}' /usr/tmp/wes/Bible/BAV/$files | sed '/Chapter/d' | more
+

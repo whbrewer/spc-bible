@@ -1,0 +1,47 @@
+#!/bin/tcsh
+set bdir=~/Dropbox/Bible/BAV
+set AWK=/usr/bin/awk
+
+
+if (`echo $#` < 2) then
+   echo usage\: $0 book chapter1\:verse1 \[chapter2\:verse2\]
+   echo ""
+   echo book can be one of:
+   echo ""
+   echo gen exo lev num deu jos jdg rut 1sa 2sa 1ki 2ki 1ch 2ch ezr neh est job psa pro ecc sos isa jer lam eze dan hos joe amo oba jon mic nah hab zep hag zec mal 
+   echo ""
+   echo mat mar luk joh act rom 1co 2co gal eph php col 1th 2th 1ti 2ti tit phm heb jam 1pe 2pe 1jo 2jo 3jo jde rev
+   exit
+endif
+
+set rootname=$1
+set realname=`echo $rootname | sed -f ~/Bible/bin/bgv.sed`
+set book=$rootname.txt
+set printbook=`echo $rootname | $AWK '{printf "%s\n",toupper("'$rootname'")}'`
+set chapter=`echo $2 | $AWK -F '[.:]' '{print $1}'`
+set verse1=`echo $2 | $AWK -F '[.:]' '{print $2}'`
+set ref1=$chapter\:$verse1
+
+set ref2=$3
+
+if ($3 == '') then
+   set verse2=`expr $verse1 + 1`
+   set ref2=$chapter\:$verse2
+#   echo $rootname $ref1\:
+else
+   set chapter=`echo $3 | $AWK -F '[.:]' '{print $1}'`
+   set verse2m1=`echo $3 | $AWK -F '[.:]' '{print $2}'` 
+   set verse2=`expr $verse2m1 + 1`
+   set ref2=$chapter\:$verse2
+   echo $book $ref1-$chapter\:$verse2m1
+endif
+
+# take out line breaks
+#$AWK '/'$ref1'$/,/'$ref2'$/ {printf "%s ", $0}' $bdir/$book \
+#| sed -e 's/  //g' -e 's/[1-9].*[0-9]:[1-9].*[0-9]//g'
+
+$AWK '/ '$ref1'$/,/ '$ref2'$|Chapter|Access this Bible/ {print $0}' \
+$bdir/$book | sed -e '/[1-9].*:.*[0-9]/d' -e 's/  //g' -e '/file:/d' | sed '$d'
+#echo '                                                    ' $printbook $ref1
+echo '                     ' $realname $ref1
+

@@ -1,0 +1,12 @@
+#!/bin/tcsh
+
+# Verse Review Random
+# usage: vrr time_in_seconds
+# e.g.:  vrr 10
+
+while ( 1 )
+   clear
+   bgrv
+   #sleep 30 
+   sleep $argv[1]
+end 

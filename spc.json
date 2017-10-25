@@ -1,0 +1,12 @@
+{
+   "category": "", 
+   "name": "bible", 
+   "input_format": "ini", 
+   "language": "", 
+   "command": "<rel_apps_path>/bible/bin/blv <book> <verse>", 
+   "postprocess": "", 
+   "preprocess": "", 
+   "plots": [], 
+   "assets": [], 
+   "description": "KJV Authorized Version"
+}
